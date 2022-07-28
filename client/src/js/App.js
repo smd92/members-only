@@ -1,7 +1,9 @@
 import React from "react";
+import SignupForm from "./SignupForm";
 import "../css/App.css";
+import "../css/Modal.css";
 
-function App() {
+const App = () => {
   const [data, setData] = React.useState(null);
 
   React.useEffect(() => {
@@ -14,9 +16,10 @@ function App() {
     <div className="App">
       <header className="App-header">
         <p>{!data ? "Loading..." : data}</p>
+        <SignupForm />
       </header>
     </div>
   );
-}
+};
 
 export default App;
