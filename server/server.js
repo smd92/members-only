@@ -6,6 +6,9 @@ const PORT = process.env.PORT || 3001;
 
 const app = express();
 
+app.use(express.json()); // to support JSON-encoded request bodies
+app.use(express.urlencoded({ extended: false })); // to support URL-encoded request bodies
+
 app.use((req, res, next) => {
   db.connectToMongo();
   next();
