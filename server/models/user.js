@@ -9,6 +9,7 @@ const userSchema = new Schema(
     userName: { type: String, required: true },
     password: { type: String, required: true },
     membershipStatus: { type: String, required: true },
+    regDate: { type: Date, required: true },
   },
   { collection: "users" }
 );

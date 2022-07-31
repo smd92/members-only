@@ -7,10 +7,14 @@ const SignupForm = () => {
 
   React.useEffect(() => {
     if (passwordValue !== confirmPasswordValue) {
-      confirmPasswordElement.current.setCustomValidity("Your passwords do not match")
-      console.log(confirmPasswordElement.current.validationMessage)
+      confirmPasswordElement.current.setCustomValidity(
+        "Your passwords do not match"
+      );
+      console.log(confirmPasswordElement.current.validationMessage);
+    } else if (passwordValue === confirmPasswordValue) {
+      confirmPasswordElement.current.setCustomValidity("");
     }
-  }, []);
+  }, [passwordValue, confirmPasswordValue]);
 
   return (
     <div>
@@ -78,11 +82,7 @@ const SignupForm = () => {
           type="hidden"
           value="basic"
         />
-        <button
-          type="submit"
-        >
-          Sign Up
-        </button>
+        <button type="submit">Sign Up</button>
       </form>
     </div>
   );

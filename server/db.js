@@ -20,9 +20,10 @@ const userCreate = (userData) => {
   const user = new User({
     firstName: userData.firstName,
     lastName: userData.lastName,
-    userName: userData.userName,
+    userName: userData.email,
     password: userData.password,
     membershipStatus: userData.membershipStatus,
+    regDate: userData.regDate,
   });
 
   user.save((err) => {
