@@ -19,7 +19,7 @@ exports.user_create_post = async (req, res, next) => {
   )
     .custom((value, { req }) => value === req.body.password)
     .run(req);
-  await check("membershipStatus").isString().run(req);
+  await check("membershipStatus").toBoolean().isBoolean().run(req);
 
   const result = validationResult(req);
   if (!result.isEmpty()) {

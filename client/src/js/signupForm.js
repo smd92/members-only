@@ -80,7 +80,7 @@ const SignupForm = () => {
           id="membershipStatus"
           name="membershipStatus"
           type="hidden"
-          value="basic"
+          value="false"
         />
         <button type="submit">Sign Up</button>
       </form>

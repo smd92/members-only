@@ -8,7 +8,7 @@ const userSchema = new Schema(
     lastName: { type: String, required: true },
     userName: { type: String, required: true },
     password: { type: String, required: true },
-    membershipStatus: { type: String, required: true },
+    membershipStatus: { type: Boolean, required: true },
     regDate: { type: Date, required: true },
   },
   { collection: "users" }
