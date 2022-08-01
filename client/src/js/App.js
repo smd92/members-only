@@ -1,22 +1,22 @@
 import React from "react";
-import SignupForm from "./SignupForm";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "../css/App.css";
 import "../css/Modal.css";
+import Landingpage from "./views/Landingpage";
+import SignupForm from "./views/SignupForm";
+import JoinClub from "./views/JoinClub";
 
 const App = () => {
-  const [data, setData] = React.useState(null);
-
-  React.useEffect(() => {
-    fetch("/api")
-      .then((res) => res.json())
-      .then((data) => setData(data.message));
-  }, []);
-
   return (
     <div className="App">
       <header className="App-header">
-        <p>{!data ? "Loading..." : data}</p>
-        <SignupForm />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Landingpage />} />
+            <Route path="/signUp" element={<SignupForm />} />
+            <Route path="/joinClub" element={<JoinClub />}/>
+          </Routes>
+        </BrowserRouter>
       </header>
     </div>
   );

@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs");
 
 // handle user create on POST
 exports.user_create_post = async (req, res, next) => {
+  //validate and sanitize form data
   await check("firstName").trim().isString().run(req);
   await check("lastName").trim().isString().run(req);
   await check("email")
@@ -26,6 +27,7 @@ exports.user_create_post = async (req, res, next) => {
     return res.status(400).json({ errors: result.array() });
   }
 
+  //encrypt user password and save user to db
   bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
     if (err) {
       return console.log(err);
