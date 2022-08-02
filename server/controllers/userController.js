@@ -57,14 +57,17 @@ exports.user_byEmail_get = async (req, res, next) => {
   if (!result.isEmpty()) {
     return res.status(400).json({ errors: result.array() });
   }
+
   try {
     const user = await User.findOne(
       { userName: req.params.email },
       { _id: 1, membershipStatus: 1 }
-    );
+    ).orFail();
+
     res.json(user);
   } catch (err) {
-    console.log(err);
-    res.send(err);
+    res.status(400);
+    res.statusMessage = `Could not find user ${req.params.email}`;
+    res.send();
   }
 };

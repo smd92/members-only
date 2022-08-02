@@ -1,20 +1,25 @@
-import { set } from "mongoose";
 import React from "react";
 
 const JoinClub = () => {
   const [passphraseInput, setPassphraseInput] = React.useState("");
   const [emailInput, setEmailInput] = React.useState("");
   const [user, setUser] = React.useState(null);
+  const [error, setError] = React.useState(false);
+  const [errorUser, setErrorUser] = React.useState("");
 
   const joinClub = async (emailInput) => {
     try {
       //get user by email
       const res = await fetch(`/users/${emailInput}`);
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
       const resJSON = await res.json();
       setUser(resJSON);
-      //
+      setError(false);
     } catch (err) {
-      console.log(err);
+      setErrorUser(emailInput);
+      setError(true);
     }
   };
 
@@ -41,6 +46,7 @@ const JoinClub = () => {
       <button type="button" onClick={() => joinClub(emailInput)}>
         Submit
       </button>
+      {error && <p>Could not find user {errorUser}</p>}
     </div>
   );
 };
