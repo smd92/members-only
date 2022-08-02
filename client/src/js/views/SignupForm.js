@@ -10,7 +10,6 @@ const SignupForm = () => {
       confirmPasswordElement.current.setCustomValidity(
         "Your passwords do not match"
       );
-      console.log(confirmPasswordElement.current.validationMessage);
     } else if (passwordValue === confirmPasswordValue) {
       confirmPasswordElement.current.setCustomValidity("");
     }

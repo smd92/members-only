@@ -11,4 +11,7 @@ router.get("/api", (req, res) => {
 //create user
 router.post("/users", userController.user_create_post);
 
+//get user by email
+router.get("/users/:email", userController.user_byEmail_get);
+
 module.exports = router;

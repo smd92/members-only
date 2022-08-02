@@ -45,3 +45,26 @@ exports.user_create_post = async (req, res, next) => {
 
   res.redirect("/");
 };
+
+//get user by email
+exports.user_byEmail_get = async (req, res, next) => {
+  await check("email")
+    .normalizeEmail({ gmail_remove_dots: false })
+    .isEmail()
+    .run(req);
+
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    return res.status(400).json({ errors: result.array() });
+  }
+  try {
+    const user = await User.findOne(
+      { userName: req.params.email },
+      { _id: 1, membershipStatus: 1 }
+    );
+    res.json(user);
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
+};
