@@ -4,10 +4,19 @@ const JoinClub = () => {
   const [passphraseInput, setPassphraseInput] = React.useState("");
   const [emailInput, setEmailInput] = React.useState("");
   const [user, setUser] = React.useState(null);
-  const [error, setError] = React.useState(false);
+  const [errorPassphrase, setErrorPassphrase] = React.useState(false);
+  const [errorEmail, setErrorEmail] = React.useState(false);
   const [errorUser, setErrorUser] = React.useState("");
 
-  const joinClub = async (emailInput) => {
+  const checkPassphrase = (passphraseInput) => {
+    if (passphraseInput !== process.env.REACT_APP_PASSPHRASE) {
+      setErrorPassphrase(true);
+    } else {
+      setErrorPassphrase(false);
+    }
+  };
+
+  const getUserByEmail = async (emailInput) => {
     try {
       //get user by email
       const res = await fetch(`/users/${emailInput}`);
@@ -16,11 +25,16 @@ const JoinClub = () => {
       }
       const resJSON = await res.json();
       setUser(resJSON);
-      setError(false);
+      setErrorEmail(false);
     } catch (err) {
       setErrorUser(emailInput);
-      setError(true);
+      setErrorEmail(true);
     }
+  };
+
+  const JoinClub = () => {
+    checkPassphrase(passphraseInput);
+    getUserByEmail(emailInput);
   };
 
   return (
@@ -43,10 +57,11 @@ const JoinClub = () => {
         onChange={(event) => setEmailInput(event.target.value)}
       />
       <br />
-      <button type="button" onClick={() => joinClub(emailInput)}>
+      <button type="button" onClick={() => JoinClub()}>
         Submit
       </button>
-      {error && <p>Could not find user {errorUser}</p>}
+      {errorEmail && <p>Could not find user {errorUser}</p>}
+      {errorPassphrase && <p>Worng Passphrase</p>}
     </div>
   );
 };

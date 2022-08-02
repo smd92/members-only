@@ -71,3 +71,8 @@ exports.user_byEmail_get = async (req, res, next) => {
     res.send();
   }
 };
+
+//update user memberShipStatus by ID
+exports.user_updateMembership_put = async (req, res, next) => {
+  res.send("hallo")
+}
