@@ -3,7 +3,6 @@ import React from "react";
 const JoinClub = () => {
   const [passphraseInput, setPassphraseInput] = React.useState("");
   const [emailInput, setEmailInput] = React.useState("");
-  const [user, setUser] = React.useState(null);
   const [errorPassphrase, setErrorPassphrase] = React.useState(false);
   const [errorEmail, setErrorEmail] = React.useState(false);
   const [errorUser, setErrorUser] = React.useState("");
@@ -11,22 +10,6 @@ const JoinClub = () => {
 
   const checkPassphrase = (passphraseInput) => {
     return passphraseInput !== process.env.REACT_APP_PASSPHRASE;
-  };
-
-  const getUserByEmail = async (emailInput) => {
-    try {
-      //get user by email
-      const res = await fetch(`/users/${emailInput}`);
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-      const resJSON = await res.json();
-      setUser(resJSON);
-      setErrorEmail(false);
-    } catch (err) {
-      setErrorUser(emailInput);
-      setErrorEmail(true);
-    }
   };
 
   const updateMembership = async (user) => {
@@ -48,13 +31,36 @@ const JoinClub = () => {
     }
   };
 
+  const findUserByEmailAndUpdateMembership = (emailInput) => {
+    fetch(`/users/${emailInput}`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(res.statusText);
+        } else {
+          return res.json();
+        }
+      })
+      .then((userData) => {
+        setErrorEmail(false);
+        updateMembership(userData);
+      })
+      .catch((err) => {
+        console.log(err);
+        setErrorUser(emailInput);
+        setErrorEmail(true);
+      });
+  };
+
   const JoinClub = () => {
+    //reset errors
+    setErrorPassphrase(false);
+    setErrorEmail(false);
+    setErrorUser(false);
+    setErrorUpdate(false);
     //check if passphrase is correct
     setErrorPassphrase(checkPassphrase(passphraseInput));
     //if passphrase is correct, get user by email
-    if (!errorPassphrase) getUserByEmail(emailInput);
-    //if email/user was found in db, update user.membershipStatus
-    if (!errorEmail) updateMembership(user);
+    if (!errorPassphrase) findUserByEmailAndUpdateMembership(emailInput);
   };
 
   return (
