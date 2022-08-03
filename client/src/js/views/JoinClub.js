@@ -7,13 +7,10 @@ const JoinClub = () => {
   const [errorPassphrase, setErrorPassphrase] = React.useState(false);
   const [errorEmail, setErrorEmail] = React.useState(false);
   const [errorUser, setErrorUser] = React.useState("");
+  const [errorUpdate, setErrorUpdate] = React.useState(false);
 
   const checkPassphrase = (passphraseInput) => {
-    if (passphraseInput !== process.env.REACT_APP_PASSPHRASE) {
-      setErrorPassphrase(true);
-    } else {
-      setErrorPassphrase(false);
-    }
+    return passphraseInput !== process.env.REACT_APP_PASSPHRASE;
   };
 
   const getUserByEmail = async (emailInput) => {
@@ -32,9 +29,32 @@ const JoinClub = () => {
     }
   };
 
+  const updateMembership = async (user) => {
+    try {
+      const res = await fetch(`/users/${user["_id"]}/membershipStatus`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ membershipStatus: true }),
+      });
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
+      setErrorUpdate(false);
+    } catch (err) {
+      console.log(err);
+      setErrorUpdate(true);
+    }
+  };
+
   const JoinClub = () => {
-    checkPassphrase(passphraseInput);
-    getUserByEmail(emailInput);
+    //check if passphrase is correct
+    setErrorPassphrase(checkPassphrase(passphraseInput));
+    //if passphrase is correct, get user by email
+    if (!errorPassphrase) getUserByEmail(emailInput);
+    //if email/user was found in db, update user.membershipStatus
+    if (!errorEmail) updateMembership(user);
   };
 
   return (
@@ -43,7 +63,7 @@ const JoinClub = () => {
       <input
         id="passphrase"
         name="passphrase"
-        type="text"
+        type="password"
         required
         onChange={(event) => setPassphraseInput(event.target.value)}
       />
@@ -61,7 +81,10 @@ const JoinClub = () => {
         Submit
       </button>
       {errorEmail && <p>Could not find user {errorUser}</p>}
-      {errorPassphrase && <p>Worng Passphrase</p>}
+      {errorPassphrase && <p>Wrong Passphrase</p>}
+      {errorUpdate && (
+        <p>Could not update membershipStatus. Please try again.</p>
+      )}
     </div>
   );
 };

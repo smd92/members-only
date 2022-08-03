@@ -74,5 +74,13 @@ exports.user_byEmail_get = async (req, res, next) => {
 
 //update user memberShipStatus by ID
 exports.user_updateMembership_put = async (req, res, next) => {
-  res.send("hallo")
-}
+  try {
+    await User.findByIdAndUpdate(req.params.id, {
+      membershipStatus: req.body.membershipStatus,
+    });
+    res.send(`membershipStatus set to ${req.body.membershipStatus}`);
+  } catch (err) {
+    res.status(400);
+    res.send("Could not update membershipStatus");
+  }
+};

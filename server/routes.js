@@ -15,6 +15,9 @@ router.post("/users", userController.user_create_post);
 router.get("/users/:email", userController.user_byEmail_get);
 
 //update user membershipStatus
-//router.put("/users/:id/membershipStatus", user_updateMembership_put);
+router.put(
+  "/users/:id/membershipStatus",
+  userController.user_updateMembership_put
+);
 
 module.exports = router;
