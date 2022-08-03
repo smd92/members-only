@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "../css/App.css";
 import "../css/Modal.css";
 import Landingpage from "./views/Landingpage";
+import SignInForm from "./views/SignInForm";
 import SignupForm from "./views/SignupForm";
 import JoinClub from "./views/JoinClub";
 
@@ -13,6 +14,7 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Landingpage />} />
+            <Route path="/signIn" element={<SignInForm />} />
             <Route path="/signUp" element={<SignupForm />} />
             <Route path="/joinClub" element={<JoinClub />} />
           </Routes>

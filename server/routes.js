@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
-
-//Require controller modules
 const userController = require("./controllers/userController");
+const pass = require("./auth/passport");
 
 router.get("/api", (req, res) => {
   res.json({ message: "Hello from server!" });
@@ -19,5 +18,8 @@ router.put(
   "/users/:id/membershipStatus",
   userController.user_updateMembership_put
 );
+
+//log in user
+router.post("/login", pass.login_post);
 
 module.exports = router;
