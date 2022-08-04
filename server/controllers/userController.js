@@ -39,11 +39,9 @@ exports.user_create_post = async (req, res, next) => {
         password: hashedPassword,
         membershipStatus: req.body.membershipStatus,
         regDate: new Date(),
-      });
+      }, req, res);
     }
   });
-
-  res.redirect("/");
 };
 
 //get user by email

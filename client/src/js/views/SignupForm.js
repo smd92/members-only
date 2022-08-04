@@ -18,7 +18,7 @@ const SignupForm = () => {
   return (
     <div>
       <p>SignupForm</p>
-      <form action="/users" method="POST">
+      <form action="/users/signup" method="POST">
         <div>
           <label htmlFor="firstName">Firstname</label>
           <input
