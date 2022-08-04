@@ -3,6 +3,13 @@ const async = require("async");
 const db = require("../db");
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
+//TUT
+const {
+  getToken,
+  COOKIE_OPTIONS,
+  getRefreshToken,
+} = require("../authenticate");
+//TUT END
 
 // handle user create on POST
 exports.user_create_post = async (req, res, next) => {
@@ -32,14 +39,18 @@ exports.user_create_post = async (req, res, next) => {
     if (err) {
       return console.log(err);
     } else {
-      db.userCreate({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
-        password: hashedPassword,
-        membershipStatus: req.body.membershipStatus,
-        regDate: new Date(),
-      }, req, res);
+      db.userCreate(
+        {
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          email: req.body.email,
+          password: hashedPassword,
+          membershipStatus: req.body.membershipStatus,
+          regDate: new Date(),
+        },
+        req,
+        res
+      );
     }
   });
 };
@@ -82,3 +93,27 @@ exports.user_updateMembership_put = async (req, res, next) => {
     res.send("Could not update membershipStatus");
   }
 };
+
+//TUT
+exports.user_authenticate_post = async (req, res, next) => {
+  console.log("hallo")
+  const token = getToken({ _id: req.user._id });
+  const refreshToken = getRefreshToken({ _id: req.user._id });
+  User.findById(req.user._id).then(
+    (user) => {
+      user.refreshToken.push({ refreshToken });
+      user.save((err, user) => {
+        if (err) {
+          res.statusCode = 500;
+          console.log(err);
+          res.send(err);
+        } else {
+          res.cookie("refreshToken", refreshToken, COOKIE_OPTIONS);
+          res.send({ success: true, token });
+        }
+      });
+    },
+    (err) => next(err)
+  );
+};
+//TUT END
