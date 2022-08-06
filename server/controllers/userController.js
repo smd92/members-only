@@ -3,13 +3,6 @@ const async = require("async");
 const db = require("../db");
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
-//TUT
-const {
-  getToken,
-  COOKIE_OPTIONS,
-  getRefreshToken,
-} = require("../authenticate");
-//TUT END
 
 // handle user create on POST
 exports.user_create_post = async (req, res, next) => {
@@ -69,7 +62,7 @@ exports.user_byEmail_get = async (req, res, next) => {
 
   try {
     const user = await User.findOne(
-      { userName: req.params.email },
+      { username: req.params.email },
       { _id: 1, membershipStatus: 1 }
     ).orFail();
 
