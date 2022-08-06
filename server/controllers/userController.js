@@ -87,7 +87,7 @@ exports.user_updateMembership_put = async (req, res, next) => {
   }
 };
 
-//TUT
+/*//TUT
 exports.user_authenticate_post = async (req, res, next) => {
   console.log("hallo")
   const token = getToken({ _id: req.user._id });
@@ -109,4 +109,4 @@ exports.user_authenticate_post = async (req, res, next) => {
     (err) => next(err)
   );
 };
-//TUT END
+//TUT END*/
