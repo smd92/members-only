@@ -1,4 +1,5 @@
 const express = require("express");
+const session = require("express-session");
 require("dotenv").config();
 const db = require("./db");
 const userRouter = require("./routes/userRoutes");
@@ -6,6 +7,8 @@ const userRouter = require("./routes/userRoutes");
 const PORT = process.env.PORT || 3001;
 
 const app = express();
+
+app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
 
 app.use(express.json()); // to support JSON-encoded request bodies
 app.use(express.urlencoded({ extended: true })); // to support URL-encoded request bodies
