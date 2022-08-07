@@ -24,7 +24,6 @@ const userCreate = (userData, req, res) => {
     membershipStatus: userData.membershipStatus,
     regDate: userData.regDate,
   });
-  
 
   user.save((err) => {
     if (err) {
