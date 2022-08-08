@@ -18,6 +18,11 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/loginSuccess", (req, res, next) => {
+  console.log(req.session)
+  res.send(req.session)
+})
+
 app.use("/users", userRouter);
 
 app.listen(PORT, () => {

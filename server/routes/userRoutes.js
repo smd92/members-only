@@ -16,7 +16,7 @@ router.post("/signup", userController.user_create_post);
 router.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/joinClub",
+    successRedirect: "/loginSuccess",
     failureRedirect: "/",
   })
 );
