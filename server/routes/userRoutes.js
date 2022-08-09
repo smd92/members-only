@@ -12,7 +12,6 @@ router.get("/api", (req, res) => {
 router.post("/signup", userController.user_create_post);
 
 //login user
-//router.post("/login", userController.user_authenticate_post);
 router.post(
   "/login",
   passport.authenticate("local", {
@@ -20,6 +19,16 @@ router.post(
     failureRedirect: "/",
   })
 );
+
+//logout user
+router.get("/logout", (req, res) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.send("user logged out");
+  });
+});
 
 //get user by email
 router.get("/email/:email", userController.user_byEmail_get);

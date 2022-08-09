@@ -38,7 +38,7 @@ const loginSuccess = () => {
   return (
     <div>
       <p>Welcome {firstname}</p>
-      <a href="/persistCheck">check</a>
+      <a href="/logout">Log out</a>
     </div>
   );
 };

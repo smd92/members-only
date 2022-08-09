@@ -3,6 +3,7 @@ const session = require("express-session");
 require("dotenv").config();
 const db = require("./db");
 const userRouter = require("./routes/userRoutes");
+const passport = require("passport");
 
 const PORT = process.env.PORT || 3001;
 
@@ -16,6 +17,9 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.json()); // to support JSON-encoded request bodies
 app.use(express.urlencoded({ extended: true })); // to support URL-encoded request bodies

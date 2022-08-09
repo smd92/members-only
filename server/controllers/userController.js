@@ -92,10 +92,10 @@ exports.user_byID_get = async (req, res) => {
     res.json(user);
   } catch (err) {
     res.status(400);
-    res.statusMessage = `Could not find user ${req.params.id}`;
+    res.statusMessage = "Could not find user";
     res.send();
   }
-}
+};
 
 /*//TUT
 exports.user_authenticate_post = async (req, res, next) => {
