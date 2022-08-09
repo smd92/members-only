@@ -1,11 +1,10 @@
 const User = require("../models/user");
-const async = require("async");
 const db = require("../db");
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 
 // handle user create on POST
-exports.user_create_post = async (req, res, next) => {
+exports.user_create_post = async (req, res) => {
   //validate and sanitize form data
   await check("firstName").trim().isString().run(req);
   await check("lastName").trim().isString().run(req);
@@ -49,7 +48,7 @@ exports.user_create_post = async (req, res, next) => {
 };
 
 //get user by email
-exports.user_byEmail_get = async (req, res, next) => {
+exports.user_byEmail_get = async (req, res) => {
   await check("email")
     .normalizeEmail({ gmail_remove_dots: false })
     .isEmail()
@@ -75,7 +74,7 @@ exports.user_byEmail_get = async (req, res, next) => {
 };
 
 //update user memberShipStatus by ID
-exports.user_updateMembership_put = async (req, res, next) => {
+exports.user_updateMembership_put = async (req, res) => {
   try {
     await User.findByIdAndUpdate(req.params.id, {
       membershipStatus: req.body.membershipStatus,
@@ -86,6 +85,17 @@ exports.user_updateMembership_put = async (req, res, next) => {
     res.send("Could not update membershipStatus");
   }
 };
+
+exports.user_byID_get = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).orFail();
+    res.json(user);
+  } catch (err) {
+    res.status(400);
+    res.statusMessage = `Could not find user ${req.params.id}`;
+    res.send();
+  }
+}
 
 /*//TUT
 exports.user_authenticate_post = async (req, res, next) => {

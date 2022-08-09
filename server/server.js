@@ -8,7 +8,14 @@ const PORT = process.env.PORT || 3001;
 
 const app = express();
 
-app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
+app.use(
+  session({
+    secret: "jaja",
+    resave: false,
+    cookie: { maxAge: 8 * 60 * 60 * 1000 },
+    saveUninitialized: true,
+  })
+);
 
 app.use(express.json()); // to support JSON-encoded request bodies
 app.use(express.urlencoded({ extended: true })); // to support URL-encoded request bodies
@@ -18,10 +25,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/loginSuccess", (req, res, next) => {
-  console.log(req.session)
-  res.send(req.session)
-})
+app.get("/sessionPassport", (req, res) => {
+  res.send(req.session.passport);
+});
 
 app.use("/users", userRouter);
 

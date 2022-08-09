@@ -22,9 +22,14 @@ router.post(
 );
 
 //get user by email
-router.get("/:email", userController.user_byEmail_get);
+router.get("/email/:email", userController.user_byEmail_get);
+
+//get user by id
+router.get("/:id", userController.user_byID_get);
 
 //update user membershipStatus
 router.put("/:id/membershipStatus", userController.user_updateMembership_put);
+
+//get user session
 
 module.exports = router;
