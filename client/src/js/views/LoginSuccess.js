@@ -1,39 +1,22 @@
 import React from "react";
+import { getUserID, getUserByID } from "../auth";
 
 const loginSuccess = () => {
   const [userID, setUserID] = React.useState(null);
   const [firstname, setFirstname] = React.useState(null);
 
-  const getSessionPassport = () => {
-    fetch("/sessionPassport")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(res.statusText);
-        } else {
-          return res.json();
-        }
-      })
-      .then((passport) => setUserID(passport.user))
-      .then(() => getUser(userID));
-  };
-
-  const getUser = (userID) => {
+  const handleLogin = async () => {
+    const res = await getUserID();
+    setUserID(res.user);
     if (userID) {
-      fetch(`/users/${userID}`)
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error(res.statusText);
-          } else {
-            return res.json();
-          }
-        })
-        .then((user) => setFirstname(user.firstName));
+      const userDB = await getUserByID(userID);
+      if (userDB) setFirstname(userDB.firstName);
     }
   };
 
   React.useEffect(() => {
-    getSessionPassport();
-  }, [userID]);
+    handleLogin();
+  }, [userID, firstname]);
 
   return (
     <div>
