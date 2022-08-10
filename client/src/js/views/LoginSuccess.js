@@ -1,5 +1,5 @@
 import React from "react";
-import { getUserID, getUserByID } from "../auth";
+import { getUserID, getUserByID } from "../helpers";
 
 const loginSuccess = () => {
   const [userID, setUserID] = React.useState(null);
