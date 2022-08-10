@@ -2,6 +2,7 @@ const express = require("express");
 const session = require("express-session");
 require("dotenv").config();
 const db = require("./db");
+const authRouter = require("./routes/authRoutes");
 const userRouter = require("./routes/userRoutes");
 const passport = require("passport");
 
@@ -13,13 +14,10 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    cookie: { maxAge: 8 * 60 * 60 * 1000 },
-    saveUninitialized: true,
+    saveUninitialized: false,
   })
 );
-
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.authenticate("session"));
 
 app.use(express.json()); // to support JSON-encoded request bodies
 app.use(express.urlencoded({ extended: true })); // to support URL-encoded request bodies
@@ -33,6 +31,16 @@ app.get("/sessionPassport", (req, res) => {
   res.send(req.session.passport);
 });
 
+app.get("/pp", (req, res) => {
+  console.log(req.session);
+  if (req.isAuthenticated()) {
+      res.send('<h1>You are authenticated</h1>');
+  } else {
+      res.send('<h1>You are not authenticated</h1>');
+  }
+});
+
+app.use("/auth", authRouter);
 app.use("/users", userRouter);
 
 app.listen(PORT, () => {

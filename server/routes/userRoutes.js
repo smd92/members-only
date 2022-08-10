@@ -1,30 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
-const passport = require("passport");
-require("../authentication/localStrategy");
 
 //create user
 router.post("/signup", userController.user_create_post);
-
-//login user
-router.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/loginSuccess",
-    failureRedirect: "/",
-  })
-);
-
-//logout user
-router.get("/logout", (req, res) => {
-  req.logout(function (err) {
-    if (err) {
-      return next(err);
-    }
-    res.send("user logged out");
-  });
-});
 
 //get user by email
 router.get("/email/:email", userController.user_byEmail_get);
