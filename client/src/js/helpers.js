@@ -1,4 +1,4 @@
-const getUserID= async () => {
+const getUserID = async () => {
   try {
     const res = await fetch("/sessionPassport");
     if (!res.ok) {

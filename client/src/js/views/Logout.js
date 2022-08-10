@@ -2,7 +2,9 @@ import React from "react";
 
 const Logout = () => {
   React.useEffect(() => {
-    fetch("/users/logout").then().catch((err => console.log(err)));
+    fetch("/users/logout")
+      .then()
+      .catch((err) => console.log(err));
   }, []);
 
   return (
