@@ -1,29 +1,28 @@
 import React from "react";
-import { getUserID, getUserByID } from "../helpers";
+import { getUserByID } from "../helpers";
 
-const loginSuccess = () => {
-  const [userID, setUserID] = React.useState(null);
+const LoginSuccess = (props) => {
   const [firstname, setFirstname] = React.useState(null);
+  const [userID, setUserID] = React.useState(null);
 
   const handleLogin = async () => {
-    const res = await getUserID();
-    setUserID(res.user);
     if (userID) {
-      const userDB = await getUserByID(userID);
-      if (userDB) setFirstname(userDB.firstName);
+      const user = await getUserByID(userID);
+      if (user) setFirstname(user.firstName);
     }
   };
 
   React.useEffect(() => {
+    setUserID(props.userID);
     handleLogin();
   }, [userID, firstname]);
 
   return (
     <div>
-      <p>Welcome {firstname}</p>
+      {firstname !== null ? <p>Welcome {firstname}</p> : <p>"Loading..."</p>}
       <a href="/logout">Log out</a>
     </div>
   );
 };
 
-export default loginSuccess;
+export default LoginSuccess;

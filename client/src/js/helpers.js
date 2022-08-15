@@ -1,17 +1,3 @@
-const getUserID = async () => {
-  try {
-    const res = await fetch("/sessionPassport");
-    if (!res.ok) {
-      throw new Error(res.statusText);
-    } else {
-      const userAuth = await res.json();
-      return userAuth;
-    }
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 const getUserByID = async (userID) => {
   try {
     const res = await fetch(`/users/${userID}`);
@@ -26,4 +12,4 @@ const getUserByID = async (userID) => {
   }
 };
 
-export { getUserID, getUserByID };
+export { getUserByID };
