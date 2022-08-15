@@ -32,7 +32,7 @@ const JoinClub = () => {
   };
 
   const findUserByEmailAndUpdateMembership = (emailInput) => {
-    fetch(`/users/${emailInput}`)
+    fetch(`/users/email/${emailInput}`)
       .then((res) => {
         if (!res.ok) {
           throw new Error(res.statusText);

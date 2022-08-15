@@ -1,4 +1,3 @@
-require("dotenv").config();
 const mongoose = require("mongoose");
 const User = require("./models/user");
 const Message = require("./models/message");
@@ -20,12 +19,15 @@ const userCreate = (userData, req, res) => {
   const user = new User({
     firstName: userData.firstName,
     lastName: userData.lastName,
-    userName: userData.email,
+    username: userData.email,
     password: userData.password,
     membershipStatus: userData.membershipStatus,
     regDate: userData.regDate,
   });
+<<<<<<< HEAD
   
+=======
+>>>>>>> 6157f78c527ccbd47563be32572ceacb7faa274b
 
   user.save((err) => {
     if (err) {

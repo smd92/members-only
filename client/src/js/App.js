@@ -6,6 +6,8 @@ import Landingpage from "./views/Landingpage";
 import SignInForm from "./views/SignInForm";
 import SignupForm from "./views/SignupForm";
 import JoinClub from "./views/JoinClub";
+import LoginSuccess from "./views/LoginSuccess";
+import Logout from "./views/Logout";
 
 const App = () => {
   return (
@@ -17,6 +19,8 @@ const App = () => {
             <Route path="/signIn" element={<SignInForm />} />
             <Route path="/signUp" element={<SignupForm />} />
             <Route path="/joinClub" element={<JoinClub />} />
+            <Route path="/loginSuccess" element={<LoginSuccess />} />
+            <Route path="/logout" element={<Logout />} />
           </Routes>
         </BrowserRouter>
       </header>

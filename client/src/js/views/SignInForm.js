@@ -4,7 +4,7 @@ const SignInForm = () => {
   return (
     <div>
       <h1>please log in</h1>
-      <form action="/users/login" method="POST">
+      <form action="/auth/login" method="POST">
         <label htmlFor="username">Username</label>
         <input name="username" placeholder="username" type="text" />
         <br />

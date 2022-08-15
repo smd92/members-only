@@ -1,18 +1,10 @@
 const User = require("../models/user");
-const async = require("async");
 const db = require("../db");
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
-//TUT
-const {
-  getToken,
-  COOKIE_OPTIONS,
-  getRefreshToken,
-} = require("../authenticate");
-//TUT END
 
 // handle user create on POST
-exports.user_create_post = async (req, res, next) => {
+exports.user_create_post = async (req, res) => {
   //validate and sanitize form data
   await check("firstName").trim().isString().run(req);
   await check("lastName").trim().isString().run(req);
@@ -56,7 +48,7 @@ exports.user_create_post = async (req, res, next) => {
 };
 
 //get user by email
-exports.user_byEmail_get = async (req, res, next) => {
+exports.user_byEmail_get = async (req, res) => {
   await check("email")
     .normalizeEmail({ gmail_remove_dots: false })
     .isEmail()
@@ -69,7 +61,7 @@ exports.user_byEmail_get = async (req, res, next) => {
 
   try {
     const user = await User.findOne(
-      { userName: req.params.email },
+      { username: req.params.email },
       { _id: 1, membershipStatus: 1 }
     ).orFail();
 
@@ -82,7 +74,7 @@ exports.user_byEmail_get = async (req, res, next) => {
 };
 
 //update user memberShipStatus by ID
-exports.user_updateMembership_put = async (req, res, next) => {
+exports.user_updateMembership_put = async (req, res) => {
   try {
     await User.findByIdAndUpdate(req.params.id, {
       membershipStatus: req.body.membershipStatus,
@@ -94,7 +86,18 @@ exports.user_updateMembership_put = async (req, res, next) => {
   }
 };
 
-//TUT
+exports.user_byID_get = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).orFail();
+    res.json(user);
+  } catch (err) {
+    res.status(400);
+    res.statusMessage = "Could not find user";
+    res.send();
+  }
+};
+
+/*//TUT
 exports.user_authenticate_post = async (req, res, next) => {
   console.log("hallo")
   const token = getToken({ _id: req.user._id });
@@ -116,4 +119,4 @@ exports.user_authenticate_post = async (req, res, next) => {
     (err) => next(err)
   );
 };
-//TUT END
+//TUT END*/
