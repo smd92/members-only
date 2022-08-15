@@ -1,14 +1,5 @@
 const express = require("express");
 const db = require("./db");
-//TUT
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
-const passport = require("passport");
-require("./strategies/JwtStrategy");
-require("./strategies/LocalStrategy");
-require("./authenticate");
-const userRouter = require("./routes/userRoutes");
-//TUT END
 
 const PORT = process.env.PORT || 3001;
 
@@ -21,34 +12,6 @@ app.use((req, res, next) => {
   db.connectToMongo();
   next();
 });
-
-//TUT
-app.use(cookieParser(process.env.COOKIE_SECRET));
-//Add the client URL to the CORS policy
-
-const whitelist = process.env.WHITELISTED_DOMAINS
-  ? process.env.WHITELISTED_DOMAINS.split(",")
-  : [];
-
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      console.log(whitelist)
-      console.log(origin)
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
-
-app.use(passport.initialize());
-
-app.use("/users", userRouter);
-//TUT END
 
 //use routes from routes.js
 //app.use("/", routes);
