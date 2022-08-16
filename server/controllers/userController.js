@@ -49,74 +49,68 @@ exports.user_create_post = async (req, res) => {
 
 //get user by email
 exports.user_byEmail_get = async (req, res) => {
-  await check("email")
-    .normalizeEmail({ gmail_remove_dots: false })
-    .isEmail()
-    .run(req);
+  if (req.isAuthenticated()) {
+    await check("email")
+      .normalizeEmail({ gmail_remove_dots: false })
+      .isEmail()
+      .run(req);
 
-  const result = validationResult(req);
-  if (!result.isEmpty()) {
-    return res.status(400).json({ errors: result.array() });
-  }
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+      return res.status(400).json({ errors: result.array() });
+    }
 
-  try {
-    const user = await User.findOne(
-      { username: req.params.email },
-      { _id: 1, membershipStatus: 1 }
-    ).orFail();
+    try {
+      const user = await User.findOne(
+        { username: req.params.email },
+        { _id: 1, membershipStatus: 1 }
+      ).orFail();
 
-    res.json(user);
-  } catch (err) {
-    res.status(400);
-    res.statusMessage = `Could not find user ${req.params.email}`;
-    res.send();
+      res.json(user);
+    } catch (err) {
+      res.status(400);
+      res.statusMessage = `Could not find user ${req.params.email}`;
+      res.send();
+    }
+  } else {
+    res.status(403).send({
+      message: "Log in to access this route",
+    });
   }
 };
 
 //update user memberShipStatus by ID
 exports.user_updateMembership_put = async (req, res) => {
-  try {
-    await User.findByIdAndUpdate(req.params.id, {
-      membershipStatus: req.body.membershipStatus,
+  if (req.isAuthenticated()) {
+    try {
+      await User.findByIdAndUpdate(req.params.id, {
+        membershipStatus: req.body.membershipStatus,
+      });
+      res.send(`membershipStatus set to ${req.body.membershipStatus}`);
+    } catch (err) {
+      res.status(400);
+      res.send("Could not update membershipStatus");
+    }
+  } else {
+    res.status(403).send({
+      message: "Log in to access this route",
     });
-    res.send(`membershipStatus set to ${req.body.membershipStatus}`);
-  } catch (err) {
-    res.status(400);
-    res.send("Could not update membershipStatus");
   }
 };
 
 exports.user_byID_get = async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id).orFail();
-    res.json(user);
-  } catch (err) {
-    res.status(400);
-    res.statusMessage = "Could not find user";
-    res.send();
+  if (req.isAuthenticated()) {
+    try {
+      const user = await User.findById(req.params.id).orFail();
+      res.json(user);
+    } catch (err) {
+      res.status(400);
+      res.statusMessage = "Could not find user";
+      res.send();
+    }
+  } else {
+    res.status(403).send({
+      message: "Log in to access this route",
+    });
   }
 };
-
-/*//TUT
-exports.user_authenticate_post = async (req, res, next) => {
-  console.log("hallo")
-  const token = getToken({ _id: req.user._id });
-  const refreshToken = getRefreshToken({ _id: req.user._id });
-  User.findById(req.user._id).then(
-    (user) => {
-      user.refreshToken.push({ refreshToken });
-      user.save((err, user) => {
-        if (err) {
-          res.statusCode = 500;
-          console.log(err);
-          res.send(err);
-        } else {
-          res.cookie("refreshToken", refreshToken, COOKIE_OPTIONS);
-          res.send({ success: true, token });
-        }
-      });
-    },
-    (err) => next(err)
-  );
-};
-//TUT END*/

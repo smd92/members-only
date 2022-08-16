@@ -36,18 +36,20 @@ const userCreate = (userData, req, res) => {
 };
 
 //save message to db
-const messageCreate = (messageData) => {
+const messageCreate = (messageData, req, res) => {
   const message = new Message({
-    user: messageData.userID,
+    user: messageData.user,
     title: messageData.title,
-    timeStamp: new Date(),
     text: messageData.text,
+    timeStamp: new Date(),
   });
 
   message.save((err) => {
     if (err) {
-      console.log(err);
-      return;
+      res.statusCode = 500;
+      res.send(err);
+    } else {
+      res.send({ success: true });
     }
   });
 };

@@ -7,7 +7,7 @@ require("../authentication/localStrategy");
 router.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/loginSuccess",
+    successRedirect: "/dashboard",
     failureRedirect: "/",
   })
 );
@@ -24,7 +24,6 @@ router.get("/logout", (req, res) => {
 
 //get auth status
 router.get("/isAuth", (req, res) => {
-  console.log(req.session);
   if (req.isAuthenticated()) {
     res.send(
       JSON.stringify({

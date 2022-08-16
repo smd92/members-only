@@ -4,6 +4,7 @@ require("dotenv").config();
 const db = require("./db");
 const authRouter = require("./routes/authRoutes");
 const userRouter = require("./routes/userRoutes");
+const messageRouter = require("./routes/messageRoutes");
 const passport = require("passport");
 
 const PORT = process.env.PORT || 3001;
@@ -29,6 +30,7 @@ app.use((req, res, next) => {
 
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
+app.use("/messages", messageRouter);
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
