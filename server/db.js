@@ -49,7 +49,7 @@ const messageCreate = (messageData, req, res) => {
       res.statusCode = 500;
       res.send(err);
     } else {
-      res.send({ success: true });
+      res.redirect("/dashboard");
     }
   });
 };
