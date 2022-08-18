@@ -7,7 +7,7 @@ import Landingpage from "./views/Landingpage";
 import SignInForm from "./views/SignInForm";
 import SignupForm from "./views/SignupForm";
 import JoinClub from "./views/JoinClub";
-import LoginSuccess from "./views/Dashboard";
+import Dashboard from "./views/Dashboard";
 import MessageForm from "./views/MessageForm";
 import Logout from "./views/Logout";
 
@@ -15,11 +15,15 @@ const App = () => {
   const [isAuth, setIsAuth] = React.useState(null);
   const [userID, setUserID] = React.useState(null);
   const [firstname, setFirstname] = React.useState(null);
+  const [isAdmin, setIsAdmin] = React.useState(null);
 
   const handleLogin = async () => {
     if (userID) {
       const user = await getUserByID(userID);
-      if (user) setFirstname(user.firstName);
+      if (user) {
+        setFirstname(user.firstName);
+        setIsAdmin(user.isAdmin);
+      }
     }
   };
 
@@ -62,7 +66,7 @@ const App = () => {
                 isAuth === false ? (
                   <Navigate to="/signIn" />
                 ) : userID !== null ? (
-                  <LoginSuccess userID={userID} />
+                  <Dashboard isAdmin={isAdmin} />
                 ) : (
                   "Loading..."
                 )

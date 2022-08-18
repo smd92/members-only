@@ -81,6 +81,7 @@ const SignupForm = () => {
           type="hidden"
           value="false"
         />
+        <input id="isAdmin" name="isAdmin" type="hidden" value="false" />
         <button type="submit">Sign Up</button>
       </form>
     </div>

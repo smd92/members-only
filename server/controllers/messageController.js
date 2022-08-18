@@ -52,3 +52,20 @@ exports.messages_list_get = async (req, res) => {
     });
   }
 };
+
+//delete message by ID
+exports.message_delete = async (req, res) => {
+  if (req.isAuthenticated()) {
+    try {
+      await Message.deleteOne({ _id: req.params.id });
+    } catch (err) {
+      res.status(400);
+      res.statusMessage = "could not delete message";
+      res.send();
+    }
+  } else {
+    res.status(403).send({
+      message: "Log in to access this route",
+    });
+  }
+};

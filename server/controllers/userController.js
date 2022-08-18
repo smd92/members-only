@@ -20,6 +20,7 @@ exports.user_create_post = async (req, res) => {
     .custom((value, { req }) => value === req.body.password)
     .run(req);
   await check("membershipStatus").toBoolean().isBoolean().run(req);
+  await check("isAdmin").toBoolean().isBoolean().run(req);
 
   const result = validationResult(req);
   if (!result.isEmpty()) {
@@ -38,6 +39,7 @@ exports.user_create_post = async (req, res) => {
           email: req.body.email,
           password: hashedPassword,
           membershipStatus: req.body.membershipStatus,
+          isAdmin: req.body.isAdmin,
           regDate: new Date(),
         },
         req,

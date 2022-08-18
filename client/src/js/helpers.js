@@ -26,4 +26,17 @@ const getMessagesList = async () => {
   }
 };
 
-export { getUserByID, getMessagesList };
+const deleteMessage = async (messageID) => {
+  try {
+    const res = await fetch(`/messages/${messageID}`, {
+      method: "DELETE",
+    });
+    if (!res.ok) {
+      throw new Error(res.statusText);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export { getUserByID, getMessagesList, deleteMessage };

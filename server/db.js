@@ -22,6 +22,7 @@ const userCreate = (userData, req, res) => {
     username: userData.email,
     password: userData.password,
     membershipStatus: userData.membershipStatus,
+    isAdmin: userData.isAdmin,
     regDate: userData.regDate,
   });
 

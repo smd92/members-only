@@ -7,7 +7,6 @@ const MessageForm = (props) => {
 
   React.useEffect(() => {
     if (props.userID) setUserID(props.userID);
-    console.log(userID);
   });
 
   return (
